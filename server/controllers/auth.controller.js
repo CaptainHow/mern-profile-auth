@@ -89,3 +89,7 @@ export const googleController = async (req, res, next) => {
         next(error);
     }
 };
+
+export const signOutController = (req, res) => {
+    res.clearCookie('access_token').status(200).json({ message: 'Signout Success', success: true })
+}
