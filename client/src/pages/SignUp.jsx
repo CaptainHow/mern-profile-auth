@@ -26,7 +26,6 @@ function SignUp() {
       const data = await res.json();
       setLoading(false);
       if (!data.success) {
-        console.log(data);
         if (data.message.includes("dup key")) {
           setError("User already exists!");
           return;
