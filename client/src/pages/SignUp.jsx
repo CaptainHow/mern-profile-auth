@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -12,7 +13,7 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(false);
+    setError("");
     try {
       setLoading(true);
       const res = await fetch("/api/v1/auth/signup", {
@@ -25,12 +26,18 @@ function SignUp() {
       const data = await res.json();
       setLoading(false);
       if (!data.success) {
-        setError(true);
+        console.log(data);
+        if (data.message.includes("dup key")) {
+          setError("User already exists!");
+          return;
+        }
+        setError("Something went wrong!");
         return;
       }
+      navigate("/sign-in");
     } catch (error) {
       setLoading(false);
-      setError(true);
+      setError("Something went wrong!");
     }
   };
 
@@ -72,7 +79,7 @@ function SignUp() {
           <span className="text-blue-500"> Sign In</span>
         </Link>
       </div>
-      <p className="text-red-700 mt-5">{error && "Something went wrong"}</p>
+      <p className="text-red-700 mt-5">{error}</p>
     </div>
   );
 }

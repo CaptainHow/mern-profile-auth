@@ -11,6 +11,7 @@ export const signupController = async (req, res, next) => {
         await newUser.save()
         res.status(201).json({
             message: "User created successfully!"
+            , success: true
         })
     } catch (error) {
         next(error)
@@ -34,8 +35,7 @@ export const signinController = async (req, res, next) => {
         res
             .cookie('access_token', token, { httpOnly: true, expires: expiryDate })
             .status(200)
-            .json(rest)
-
+            .json({ ...rest, success: true })
     } catch (error) {
         next(error)
     }
