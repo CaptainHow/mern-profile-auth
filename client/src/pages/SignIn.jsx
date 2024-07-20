@@ -19,7 +19,6 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      throw "ad";
       dispatch(signInStart());
       const res = await fetch("/api/v1/auth/signin", {
         method: "POST",
